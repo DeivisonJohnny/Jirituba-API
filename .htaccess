@@ -1,9 +1,4 @@
-# Ativa o mecanismo de reescrita
 RewriteEngine On
-
-# Caso o arquivo ou diretório solicitado exista, serve-o
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Redireciona todas as outras solicitações para index.php
-RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+RewriteRule ^(.*)$ index.php/$1 [L,QSA]
