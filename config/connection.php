@@ -1,12 +1,12 @@
 <?php
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable('../');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
 class Connection
 {
-    private $connection;
+    protected $connection;
 
 
     function __construct()
@@ -24,12 +24,9 @@ class Connection
             $this->connection = new PDO($dsn, $_ENV['USERNAME'], $_ENV['PASSWORD']);
         } catch (\PDOException $error) {
             echo $error;
-        }
-
+        } 
 
     }
 
 }
 
-
-new Connection();

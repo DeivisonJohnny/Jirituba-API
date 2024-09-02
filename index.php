@@ -1,20 +1,24 @@
 <?php
+require_once "./src/Controllers/index.php";
 
-class Request
+
+header('Access-Control-Allow-Origin: *');
+
+class Request extends ManagerController
 {
     private $routes;
-    public $method;
-    private $body;
+    private $method;
     private $endpoint;
 
     function __construct()
     {
         $this->routes = [
             "POST" => [
-                '/auth' => "authUser"
+                '/auth' => "authUser",
+                '/login' => "login"
             ],
             "GET" => [
-                '/auth' => "authUser",
+                '/usuario' => "getListUser",
             ],
             "PUT" => [],
             "DELETE" => [],
@@ -26,7 +30,7 @@ class Request
         $this->handleRequest();
     }
 
-    function handleRequest()
+    private function handleRequest()
     {
         if (!isset($this->routes[$this->method])) {
             http_response_code(405);
@@ -46,14 +50,25 @@ class Request
         }
 
 
-        return $this->$functionName();
-    }
 
-    function authUser(){
-
-        
+        $response = $this->$functionName($this->getBodyRequest());
 
     }
+
+
+    private function getBodyRequest()
+    {
+        $body = file_get_contents('php://input');
+        $data = json_decode($body, true);
+
+        if (!json_last_error() === JSON_ERROR_NONE) {
+            http_response_code(400);
+        }
+
+        return $data;
+
+    }
+
 
 }
 
